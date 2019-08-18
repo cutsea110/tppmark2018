@@ -28,6 +28,6 @@ ex3 = 1 ∷ 5 ∷ 3 ∷ []
 ex4 : Vec ℕ 4
 ex4 = 2 ∷ 0 ∷ 1 ∷ 9 ∷ []
 
-is_valid : {k : ℕ}{k≥1 : k ≥ 1}
+isValid : {k : ℕ}{k≥1 : k ≥ 1}
   → (xs : Vec ℕ k) → (m n : ℕ) → m + (indexAt {k≥1 = k≥1} xs m) ≡ n + (indexAt {k≥1 = k≥1} xs n) → m ≡ n
-is xs valid m n prf = {!!}
+isValid (x ∷ xs) m n prf = {!!}

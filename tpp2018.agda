@@ -1,7 +1,8 @@
 module tpp2018 where
 
-open import Data.Bool hiding (_≟_; _≤?_)
-open import Data.Fin hiding (_+_; _≟_; _≤?_)
+open import Data.Bool hiding (_≟_; _≤?_; _≤_)
+open import Data.Bool.Properties hiding (_≤?_)
+open import Data.Fin hiding (_+_; _≟_; _≤?_; _≤_)
 open import Data.Empty
 open import Data.Nat
 open import Data.Nat.DivMod
@@ -15,7 +16,9 @@ open import Agda.Builtin.Nat
 
 1+m≤?1+n⇒m≤?n : (m n : ℕ) → True (m ≤? n) → True (suc m ≤? suc n)
 1+m≤?1+n⇒m≤?n m n p with m ≤? n
-1+m≤?1+n⇒m≤?n m n tt | yes m≤n = {!!}
+1+m≤?1+n⇒m≤?n m n tt | yes m≤n with suc m ≤? suc n
+1+m≤?1+n⇒m≤?n m n tt | yes m≤n | yes p = tt
+1+m≤?1+n⇒m≤?n m n tt | yes m≤n | no ¬p = ¬p (s≤s m≤n)
 
 indexAt : {A : Set}{k : ℕ}{k≥1 : k ≥ 1} → Vec A k → (n : ℕ) → A
 indexAt {k = suc k} {k≥1 = s≤s k≥1} xs m
@@ -26,8 +29,6 @@ indexAt {k = suc k} {k≥1 = s≤s k≥1} xs m
     help m k | s≤s p with mod-helper 0 k m k ≤? k
     help m k | s≤s p | yes q = tt
     help m k | s≤s p | no ¬q = ¬q p
-
--- <⇒≤ (m%n<n m k) = mod-helper 0 k m k Data.Nat.≤ suc k
 
 f = False
 t = True

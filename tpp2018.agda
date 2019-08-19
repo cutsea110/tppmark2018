@@ -19,9 +19,10 @@ indexAt : {A : Set}{k : ℕ}{k≥1 : k ≥ 1} → Vec A k → (n : ℕ) → A
 indexAt {k = suc k} {k≥1 = s≤s k≥1} xs m = lookup xs (#_ (m % (suc k)) {n = suc k} {m<n = 1+m≤?1+n⇒m≤?n (m % suc k) k (help m k)})
   where
     help : ∀ m k → T ⌊ mod-helper 0 k m k ≤? k ⌋
-    help m k with <⇒≤ (m%n<n m k)
-    ... | p = {!!}
--- True (suc (m % suc k) ≤? suc k)
+    help m k with (m%n<n m k)
+    help m k | s≤s p with mod-helper 0 k m k ≤? k
+    help m k | s≤s p | yes q = tt
+    help m k | s≤s p | no ¬q = ¬q p
 
 -- <⇒≤ (m%n<n m k) = mod-helper 0 k m k Data.Nat.≤ suc k
 

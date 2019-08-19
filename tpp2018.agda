@@ -17,8 +17,8 @@ open import Agda.Builtin.Nat
 1+m≤?1+n⇒m≤?n : (m n : ℕ) → True (m ≤? n) → True (suc m ≤? suc n)
 1+m≤?1+n⇒m≤?n m n p with m ≤? n
 1+m≤?1+n⇒m≤?n m n tt | yes m≤n with suc m ≤? suc n
-1+m≤?1+n⇒m≤?n m n tt | yes m≤n | yes p = tt
-1+m≤?1+n⇒m≤?n m n tt | yes m≤n | no ¬p = ¬p (s≤s m≤n)
+1+m≤?1+n⇒m≤?n m n tt | yes m≤n | yes 1+m≤1+n = tt
+1+m≤?1+n⇒m≤?n m n tt | yes m≤n | no  1+m≰1+n = 1+m≰1+n (s≤s m≤n)
 
 indexAt : {A : Set}{k : ℕ}{k≥1 : k ≥ 1} → Vec A k → (n : ℕ) → A
 indexAt {k = suc k} {k≥1 = s≤s k≥1} xs m

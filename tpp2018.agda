@@ -4,14 +4,26 @@ open import Data.Bool hiding (_≟_; _≤?_)
 open import Data.Fin hiding (_+_; _≟_; _≤?_)
 open import Data.Nat
 open import Data.Nat.DivMod
+open import Data.Nat.Properties
 open import Data.Vec
 open import Data.Unit using (⊤; tt)
 open import Relation.Nullary
 open import Relation.Nullary.Decidable
 open import Relation.Binary.PropositionalEquality using (_≡_; refl)
+open import Agda.Builtin.Nat
+
+1+m≤?1+n⇒m≤?n : (m n : ℕ) → True (m ≤? n) → True (suc m ≤? suc n)
+1+m≤?1+n⇒m≤?n m n p = {!!}
 
 indexAt : {A : Set}{k : ℕ}{k≥1 : k ≥ 1} → Vec A k → (n : ℕ) → A
-indexAt {k = suc k} {k≥1 = s≤s k≥1} xs m = lookup xs (#_ (m % (suc k)) {n = suc k} {m<n = {!!}})
+indexAt {k = suc k} {k≥1 = s≤s k≥1} xs m = lookup xs (#_ (m % (suc k)) {n = suc k} {m<n = 1+m≤?1+n⇒m≤?n (m % suc k) k (help m k)})
+  where
+    help : ∀ m k → T ⌊ mod-helper 0 k m k ≤? k ⌋
+    help m k with <⇒≤ (m%n<n m k)
+    ... | p = {!!}
+-- True (suc (m % suc k) ≤? suc k)
+
+-- <⇒≤ (m%n<n m k) = mod-helper 0 k m k Data.Nat.≤ suc k
 
 f = False
 t = True

@@ -15,8 +15,7 @@ open import Relation.Binary.PropositionalEquality using (_≡_; refl)
 open import Agda.Builtin.Nat
 
 1+m≤?1+n⇒m≤?n : (m n : ℕ) → True (m ≤? n) → True (suc m ≤? suc n)
-1+m≤?1+n⇒m≤?n m n p with m ≤? n
-1+m≤?1+n⇒m≤?n m n tt | yes m≤n with suc m ≤? suc n
+1+m≤?1+n⇒m≤?n m n p with m ≤? n | suc m ≤? suc n
 1+m≤?1+n⇒m≤?n m n tt | yes m≤n | yes 1+m≤1+n = tt
 1+m≤?1+n⇒m≤?n m n tt | yes m≤n | no  1+m≰1+n = 1+m≰1+n (s≤s m≤n)
 

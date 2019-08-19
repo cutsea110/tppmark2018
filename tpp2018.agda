@@ -1,7 +1,7 @@
 module tpp2018 where
 
 open import Data.Bool hiding (_≟_; _≤?_; _≤_)
-open import Data.Bool.Properties hiding (_≤?_)
+open import Data.Bool.Properties hiding (_≤?_; _≟_)
 open import Data.Fin hiding (_+_; _≟_; _≤?_; _≤_)
 open import Data.Empty
 open import Data.Nat
@@ -29,18 +29,36 @@ indexAt {k = suc k} {k≥1 = s≤s k≥1} xs m
     help m k | s≤s p | yes q = tt
     help m k | s≤s p | no ¬q = ¬q p
 
-ex1 : Vec ℕ 3
-ex1 = 1 ∷ 1 ∷ 1 ∷ []
+valid1 : Vec ℕ 3
+valid1 = 1 ∷ 1 ∷ 1 ∷ []
 
-ex2 : Vec ℕ 2
-ex2 = 2 ∷ 0 ∷ []
+valid2 : Vec ℕ 2
+valid2 = 2 ∷ 0 ∷ []
 
-ex3 : Vec ℕ 3
-ex3 = 1 ∷ 5 ∷ 3 ∷ []
+valid3 : Vec ℕ 3
+valid3 = 1 ∷ 5 ∷ 3 ∷ []
 
-ex4 : Vec ℕ 4
-ex4 = 2 ∷ 0 ∷ 1 ∷ 9 ∷ []
+valid4 : Vec ℕ 4
+valid4 = 2 ∷ 0 ∷ 1 ∷ 9 ∷ []
+
+invalid1 : Vec ℕ 3
+invalid1 = 1 ∷ 2 ∷ 1 ∷ []
+
+invalid2 : Vec ℕ 2
+invalid2 = 3 ∷ 0 ∷ []
+
+invalid3 : Vec ℕ 3
+invalid3 = 1 ∷ 3 ∷ 5 ∷ []
+
+invalid4 : Vec ℕ 4
+invalid4 = 2 ∷ 0 ∷ 1 ∷ 8 ∷ []
+
+data Valid : {k : ℕ} → Vec ℕ k → Set where
+  valid : {k : ℕ} {k≥1 : k ≥ 1} →
+    (xs : Vec ℕ k) → ((m n : ℕ) → m + indexAt {k≥1 = k≥1} xs m ≡ n + indexAt {k≥1 = k≥1} xs n → m ≡ n) → Valid xs
 
 isValid : {k : ℕ}{k≥1 : k ≥ 1}
   → (xs : Vec ℕ k) → (m n : ℕ) → m + (indexAt {k≥1 = k≥1} xs m) ≡ n + (indexAt {k≥1 = k≥1} xs n) → m ≡ n
-isValid (x ∷ xs) m n prf = {!!}
+isValid (x ∷ xs) m n prf with m ≟ n
+isValid (x ∷ xs) m n prf | yes m≡n = m≡n
+isValid (x ∷ xs) m n prf | no  m≢n  = {!!}

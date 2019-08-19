@@ -30,9 +30,6 @@ indexAt {k = suc k} {k≥1 = s≤s k≥1} xs m
     help m k | s≤s p | yes q = tt
     help m k | s≤s p | no ¬q = ¬q p
 
-f = False
-t = True
-
 ex1 : Vec ℕ 3
 ex1 = 1 ∷ 1 ∷ 1 ∷ []
 

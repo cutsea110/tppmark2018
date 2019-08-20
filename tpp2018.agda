@@ -61,11 +61,12 @@ invalid4 = 2 ∷ 0 ∷ 1 ∷ 8 ∷ []
 injective : (f : ℕ → ℕ) → Set
 injective f = (m n : ℕ) → f m ≡ f n → m ≡ n
 
-phi : {k : ℕ}(k≥1 : k ≥ 1) → Vec ℕ k → ℕ → ℕ
-phi k≥1 xs n = n + indexAt k≥1 xs n
+phi : {k : ℕ} → Vec ℕ k → ℕ → ℕ
+phi {0F} [] n = n
+phi {suc k} xs n = n + indexAt (s≤s z≤n) xs n
 
 data Valid : {k : ℕ} → Vec ℕ k → Set where
-  valid : {k : ℕ} (k≥1 : k ≥ 1) → (xs : Vec ℕ k) → injective (phi k≥1 xs) → Valid xs
+  valid : {k : ℕ} (k≥1 : k ≥ 1) → (xs : Vec ℕ k) → injective (phi xs) → Valid xs
 
 isValid : {k : ℕ} (xs : Vec ℕ k) → Bool
 isValid = {!!}

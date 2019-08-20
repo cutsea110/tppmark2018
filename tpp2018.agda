@@ -9,9 +9,10 @@ open import Data.Nat.DivMod
 open import Data.Nat.Properties
 open import Data.Product using (_×_; _,_)
 open import Data.Vec
+open import Data.Vec.Properties
 open import Data.Unit using (⊤; tt)
 open import Relation.Nullary
-open import Relation.Nullary.Decidable
+open import Relation.Nullary.Decidable hiding (map)
 open import Relation.Binary.PropositionalEquality using (_≡_; refl)
 open import Agda.Builtin.Nat
 
@@ -63,17 +64,23 @@ injective f = (m n : ℕ) → f m ≡ f n → m ≡ n
 phi : {k : ℕ} → Vec ℕ (suc k) → ℕ → ℕ
 phi xs n = n + indexAt xs n
 
+iota : (k : ℕ) → Vec ℕ k
+iota k = tabulate toℕ
+
+_notElem_ : {k : ℕ} → ℕ → Vec ℕ k → Bool
+x notElem [] = true
+x notElem (y ∷ ys) = not (x ≡ᵇ y) ∧ x notElem ys
+
+unique : ∀ {k} → Vec ℕ k → Bool
+unique [] = true
+unique (x ∷ xs) = x notElem xs ∧ unique xs
+
 data Valid : {k : ℕ} → Vec ℕ (suc k) → Set where
   valid : {k : ℕ} (xs : Vec ℕ (suc k)) → injective (phi xs) → Valid xs
   invalid : {k : ℕ} (xs : Vec ℕ (suc k)) → ¬ injective (phi xs) → Valid xs
 
-validity : {k : ℕ} (xs : Vec ℕ (suc k)) → Valid xs
-validity {k} xs = {!!}
-
-isValid : {k : ℕ} (xs : Vec ℕ (suc k)) → Bool
-isValid xs with validity xs
-isValid xs | valid   .xs _ = true
-isValid xs | invalid .xs _ = false
+isValid : {k : ℕ} → Vec ℕ (suc k) → Bool
+isValid {k} xs = unique (zipWith (λ a i → (a + i) % suc k) xs (iota (suc k))) 
 
 problem1 : ∀ k xs → isValid {k} xs ≡ true ⇔ Valid xs
 problem1 k xs = {!!} , {!!}

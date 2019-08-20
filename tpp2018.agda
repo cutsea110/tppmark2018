@@ -77,7 +77,6 @@ unique (x ∷ xs) = x notElem xs ∧ unique xs
 
 data Valid : {k : ℕ} → Vec ℕ (suc k) → Set where
   valid : {k : ℕ} (xs : Vec ℕ (suc k)) → injective (phi xs) → Valid xs
-  invalid : {k : ℕ} (xs : Vec ℕ (suc k)) → ¬ injective (phi xs) → Valid xs
 
 isValid : {k : ℕ} → Vec ℕ (suc k) → Bool
 isValid {k} xs = unique (zipWith (λ a i → (a + i) % suc k) xs (iota (suc k))) 

@@ -64,7 +64,7 @@ phi : {k : ℕ} → Vec ℕ (suc k) → ℕ → ℕ
 phi xs n = n + indexAt xs n
 
 data Valid : {k : ℕ} → Vec ℕ (suc k) → Set where
-  valid : {k : ℕ} → (xs : Vec ℕ (suc k)) → injective (phi xs) → Valid xs
+  valid : {k : ℕ} (xs : Vec ℕ (suc k)) → injective (phi xs) → Valid xs
   invalid : {k : ℕ} (xs : Vec ℕ (suc k)) → ¬ injective (phi xs) → Valid xs
 
 validity : {k : ℕ} (xs : Vec ℕ (suc k)) → Valid xs
@@ -77,4 +77,3 @@ isValid xs | invalid .xs _ = false
 
 problem1 : ∀ k xs → isValid {k} xs ≡ true ⇔ Valid xs
 problem1 k xs = {!!} , {!!}
-

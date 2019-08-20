@@ -7,7 +7,7 @@ open import Data.Empty
 open import Data.Nat
 open import Data.Nat.DivMod
 open import Data.Nat.Properties
-open import Data.Product using (_×_)
+open import Data.Product using (_×_; _,_)
 open import Data.Vec
 open import Data.Unit using (⊤; tt)
 open import Relation.Nullary
@@ -17,7 +17,7 @@ open import Agda.Builtin.Nat
 
 infix 3 _⇔_
 _⇔_ : ∀ P Q → Set
-p ⇔ q = p → q × q → p
+p ⇔ q = (p → q) × (q → p)
 
 1+m≤?1+n⇒m≤?n : (m n : ℕ) → True (m ≤? n) → True (suc m ≤? suc n)
 1+m≤?1+n⇒m≤?n m n p with m ≤? n | suc m ≤? suc n
@@ -67,9 +67,15 @@ phi {suc k} xs n = n + indexAt (s≤s z≤n) xs n
 
 data Valid : {k : ℕ} → Vec ℕ k → Set where
   valid : {k : ℕ} (k≥1 : k ≥ 1) → (xs : Vec ℕ k) → injective (phi xs) → Valid xs
+  invalid : {k : ℕ} (xs : Vec ℕ k) → ¬ injective (phi xs) → Valid xs
+
+validity : {k : ℕ} (xs : Vec ℕ k) → Valid xs
+validity {k} xs = {!!}
 
 isValid : {k : ℕ} (xs : Vec ℕ k) → Bool
-isValid = {!!}
+isValid xs with validity xs
+isValid xs | valid k≥1 .xs prf = true
+isValid xs | invalid .xs   prf = false
 
 problem1 : ∀ k xs → isValid {k} xs ≡ true ⇔ Valid xs
-problem1 = {!!}
+problem1 k xs = {!!} , {!!}

@@ -7,12 +7,17 @@ open import Data.Empty
 open import Data.Nat
 open import Data.Nat.DivMod
 open import Data.Nat.Properties
+open import Data.Product using (_×_)
 open import Data.Vec
 open import Data.Unit using (⊤; tt)
 open import Relation.Nullary
 open import Relation.Nullary.Decidable
 open import Relation.Binary.PropositionalEquality using (_≡_; refl)
 open import Agda.Builtin.Nat
+
+infix 3 _⇔_
+_⇔_ : ∀ P Q → Set
+p ⇔ q = p → q × q → p
 
 1+m≤?1+n⇒m≤?n : (m n : ℕ) → True (m ≤? n) → True (suc m ≤? suc n)
 1+m≤?1+n⇒m≤?n m n p with m ≤? n | suc m ≤? suc n
@@ -57,8 +62,8 @@ data Valid : {k : ℕ} → Vec ℕ k → Set where
   valid : {k : ℕ} {k≥1 : k ≥ 1} →
     (xs : Vec ℕ k) → ((m n : ℕ) → m + indexAt {k≥1 = k≥1} xs m ≡ n + indexAt {k≥1 = k≥1} xs n → m ≡ n) → Valid xs
 
-isValid : {k : ℕ}{k≥1 : k ≥ 1}
-  → (xs : Vec ℕ k) → (m n : ℕ) → m + (indexAt {k≥1 = k≥1} xs m) ≡ n + (indexAt {k≥1 = k≥1} xs n) → m ≡ n
-isValid (x ∷ xs) m n prf with m ≟ n
-isValid (x ∷ xs) m n prf | yes m≡n = m≡n
-isValid (x ∷ xs) m n prf | no  m≢n  = {!!}
+isValid : {k : ℕ} (xs : Vec ℕ k) → Bool
+isValid = {!!}
+
+problem1 : ∀ k xs → isValid {k} xs ≡ true ⇔ Valid xs
+problem1 = {!!}

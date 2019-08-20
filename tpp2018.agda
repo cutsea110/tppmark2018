@@ -81,5 +81,11 @@ data Valid : {k : ℕ} → Vec ℕ (suc k) → Set where
 isValid : {k : ℕ} → Vec ℕ (suc k) → Bool
 isValid {k} xs = unique (zipWith (λ a i → (a + i) % suc k) xs (iota (suc k))) 
 
+isValid⇒Valid : (k : ℕ) → (xs : Vec ℕ (suc k)) → isValid xs  ≡ true → Valid xs
+isValid⇒Valid k (x ∷ xs) prf = {!!}
+
+Valid⇒isValid : (k : ℕ) → (xs : Vec ℕ (suc k)) → Valid xs → isValid xs  ≡ true
+Valid⇒isValid k (x ∷ xs) (valid .(x ∷ xs) prf) = {!!}
+
 problem1 : ∀ k xs → isValid {k} xs ≡ true ⇔ Valid xs
-problem1 k xs = {!!} , {!!}
+problem1 k xs = isValid⇒Valid k xs , Valid⇒isValid k xs

@@ -24,8 +24,8 @@ p ⇔ q = p → q × q → p
 1+m≤?1+n⇒m≤?n m n tt | yes m≤n | yes 1+m≤1+n = tt
 1+m≤?1+n⇒m≤?n m n tt | yes m≤n | no  1+m≰1+n = 1+m≰1+n (s≤s m≤n)
 
-indexAt : {A : Set}{k : ℕ}{k≥1 : k ≥ 1} → Vec A k → (n : ℕ) → A
-indexAt {k = suc k} {k≥1 = s≤s k≥1} xs m
+indexAt : {A : Set}{k : ℕ}(k≥1 : k ≥ 1) → Vec A k → (n : ℕ) → A
+indexAt {k = suc k} (s≤s k≥1) xs m
   = lookup xs (#_ (m % (suc k)) {n = suc k} {m<n = 1+m≤?1+n⇒m≤?n (m % suc k) k (help m k)})
   where
     help : ∀ m k → T ⌊ mod-helper 0 k m k ≤? k ⌋
@@ -58,9 +58,14 @@ invalid3 = 1 ∷ 3 ∷ 5 ∷ []
 invalid4 : Vec ℕ 4
 invalid4 = 2 ∷ 0 ∷ 1 ∷ 8 ∷ []
 
+injective : (f : ℕ → ℕ) → Set
+injective f = (m n : ℕ) → f m ≡ f n → m ≡ n
+
+phi : {k : ℕ}(k≥1 : k ≥ 1) → Vec ℕ k → ℕ → ℕ
+phi k≥1 xs n = n + indexAt k≥1 xs n
+
 data Valid : {k : ℕ} → Vec ℕ k → Set where
-  valid : {k : ℕ} {k≥1 : k ≥ 1} →
-    (xs : Vec ℕ k) → ((m n : ℕ) → m + indexAt {k≥1 = k≥1} xs m ≡ n + indexAt {k≥1 = k≥1} xs n → m ≡ n) → Valid xs
+  valid : {k : ℕ} (k≥1 : k ≥ 1) → (xs : Vec ℕ k) → injective (phi k≥1 xs) → Valid xs
 
 isValid : {k : ℕ} (xs : Vec ℕ k) → Bool
 isValid = {!!}

@@ -1,6 +1,6 @@
-
 module e43 where
 
+open import Data.List
 open import Data.List.NonEmpty
 open import Data.Nat
 open import Size
@@ -40,9 +40,6 @@ seq (NotToss s) = 0 ∷ record { force = seq s }
 Tossable : (ns : Site) → (ms : Site) → air ns ≢ air ms → Site
 air (Tossable ns ms prf) = suc (air ns)
 seq (Tossable ns ms prf) = suc (air ms) ∷ record { force = seq ns }
-
-open import Data.List
-open import Data.List.NonEmpty
 
 -- valid
 toss111 : Site∅

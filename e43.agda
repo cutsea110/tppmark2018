@@ -1,7 +1,7 @@
 module e43 where
 
-open import Data.List
-open import Data.List.NonEmpty
+open import Data.List hiding (head; tail)
+open import Data.List.NonEmpty hiding (head; tail)
 open import Data.Nat
 open import Size
 open import Codata.Stream
@@ -38,8 +38,12 @@ air (NotToss s) = suc (air s)
 seq (NotToss s) = 0 ∷ record { force = seq s }
 
 Tossable : (ns : Site) → (ms : Site) → air ns ≢ air ms → Site
-air (Tossable ns ms prf) = suc (air ns)
-seq (Tossable ns ms prf) = suc (air ms) ∷ record { force = seq ns }
+air (Tossable ns ms n≢m) = suc (air ns)
+seq (Tossable ns ms n≢m) = suc (air ms) ∷ record { force = seq ns }
+
+_!_ : {A : Set} → Stream A ∞ → ℕ → A
+s ! zero = head s
+s ! suc i = tail s ! i
 
 -- valid
 toss111 : Site∅

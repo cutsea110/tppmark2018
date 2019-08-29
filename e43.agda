@@ -1,7 +1,7 @@
 module e43 where
 
 open import Agda.Builtin.Nat using (_==_)
-open import Data.Bool using (Bool; true; false; _∧_; _∨_)
+open import Data.Bool using (Bool; true; false; _∧_; _∨_; not)
 open import Data.Fin using (toℕ)
 open import Data.List using (List; []; _∷_)
 open import Data.List.NonEmpty using (List⁺; _∷_; length; fromVec; toList)
@@ -76,16 +76,23 @@ injective f = (m n : ℕ) → f m ≡ f n → m ≡ n
 iota : (n : ℕ) → (0<n : 0 < n) → List⁺ ℕ
 iota (suc n) (s≤s 0<n) = fromVec {n = n} (tabulate toℕ)
 
-_notElem_ : ℕ → List⁺ ℕ → Bool
-x notElem ys = x elem (toList ys)
-  where
-    _elem_ : ℕ → List ℕ → Bool
-    _ elem [] = false
-    z elem (x ∷ xs) = (z == x) ∨ (z elem xs)
+_elem_ : ℕ → List ℕ → Bool
+_ elem [] = false
+z elem (x ∷ xs) = (z == x) ∨ (z elem xs)
 
+_elem⁺_ : ℕ → List⁺ ℕ → Bool
+x elem⁺ xs = x elem (toList xs)
+
+unique : List ℕ → Bool
+unique [] = true
+unique (_ ∷ []) = true
+unique (x ∷ xs) = not (x elem xs) ∧ unique xs
+
+unique⁺ : List⁺ ℕ → Bool
+unique⁺ xs = unique (toList xs)
 
 isValid : List⁺ ℕ → Bool
-isValid xs = false
+isValid xs = {!!}
 
 -- sample
 module _  where

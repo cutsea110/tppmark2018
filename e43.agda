@@ -4,8 +4,9 @@ open import Agda.Builtin.Nat using (_==_)
 open import Data.Bool using (Bool; true; false; _∧_; _∨_; not)
 open import Data.Fin using (toℕ)
 open import Data.List using (List; []; _∷_)
-open import Data.List.NonEmpty using (List⁺; _∷_; length; fromVec; toList)
-open import Data.Nat using (ℕ; zero; suc; z≤n; s≤s; _<_)
+open import Data.List.NonEmpty using (List⁺; _∷_; length; fromVec; toList; zipWith)
+open import Data.Nat using (ℕ; zero; suc; z≤n; s≤s; _<_; _+_)
+open import Data.Nat.DivMod using (_%_)
 open import Data.Nat.Properties using (_≤?_)
 open import Data.Product using (_×_)
 open import Data.Unit using (tt)
@@ -68,7 +69,7 @@ indexAt (x ∷ xs) zero i<len = x
 indexAt (_ ∷ x ∷ xs) (suc i) (s≤s i<len) = indexAt (x ∷ xs) i i<len
 
 phi : (xs : List⁺ ℕ) → (n : ℕ) → (n<len : n < length xs) → ℕ
-phi = indexAt
+phi xs n n<len = n + indexAt xs n n<len
 
 injective : (f : ℕ → ℕ) → Set
 injective f = (m n : ℕ) → f m ≡ f n → m ≡ n
@@ -92,7 +93,8 @@ unique⁺ : List⁺ ℕ → Bool
 unique⁺ xs = unique (toList xs)
 
 isValid : List⁺ ℕ → Bool
-isValid xs = {!!}
+isValid xs = unique⁺ (zipWith (λ a i →  (a + i) % sz) xs (iota sz (s≤s z≤n)))
+  where sz = length xs
 
 -- sample
 module _  where

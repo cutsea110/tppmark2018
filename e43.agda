@@ -1,12 +1,14 @@
 module e43 where
 
 open import Data.Bool using (Bool; true; false)
+open import Data.Fin using (toℕ)
 open import Data.List using (List; []; _∷_)
-open import Data.List.NonEmpty using (List⁺; _∷_; length)
+open import Data.List.NonEmpty using (List⁺; _∷_; length; fromVec)
 open import Data.Nat using (ℕ; zero; suc; z≤n; s≤s; _<_)
 open import Data.Nat.Properties using (_≤?_)
 open import Data.Product using (_×_)
 open import Data.Unit using (tt)
+open import Data.Vec using (Vec; tabulate)
 open import Size using (∞)
 open import Codata.Stream using (Stream; _∷_; head; tail; cycle)
 open import Relation.Binary.PropositionalEquality using (_≡_; _≢_)
@@ -25,10 +27,6 @@ p ⇔ q = (p → q) × (q → p)
 _!_ : {A : Set} → Stream A ∞ → ℕ → A
 s ! zero = head s
 s ! suc i = tail s ! i
-
-indexAt : {A : Set} (xs : List⁺ A) → (i : ℕ) → (i<len : i < length xs) → A
-indexAt (x ∷ xs) zero i<len = x
-indexAt (_ ∷ x ∷ xs) (suc i) (s≤s i<len) = indexAt (x ∷ xs) i i<len
 
 record Site∅ : Set where
   coinductive
@@ -64,34 +62,52 @@ Tossable : (ns : Site) → (ms : Site) → air ns ≢ air ms → Site
 air (Tossable ns ms n≢m) = suc (air ns)
 seq (Tossable ns ms n≢m) = suc (air ms) ∷ record { force = seq ns }
 
+indexAt : {A : Set} (xs : List⁺ A) → (i : ℕ) → (i<len : i < length xs) → A
+indexAt (x ∷ xs) zero i<len = x
+indexAt (_ ∷ x ∷ xs) (suc i) (s≤s i<len) = indexAt (x ∷ xs) i i<len
+
+phi : (xs : List⁺ ℕ) → (n : ℕ) → (n<len : n < length xs) → ℕ
+phi = indexAt
+
+injective : (f : ℕ → ℕ) → Set
+injective f = (m n : ℕ) → f m ≡ f n → m ≡ n
+
+iota : (n : ℕ) → (0<n : 0 < n) → List⁺ ℕ
+iota (suc n) (s≤s 0<n) = fromVec {n = n} (tabulate toℕ)
+
 isValid : List⁺ ℕ → Bool
 isValid xs = {!!}
 
--- valid
-toss111 : Site∅
-toss111 = ⊢ cycle (1 ∷ 1 ∷ 1 ∷ [])
+-- sample
+module _  where
+  to10 : List⁺ ℕ
+  to10 = iota 10 (s≤s z≤n)
 
-toss20 : Site∅
-toss20 = ⊢ cycle (2 ∷ 0 ∷ [])
+  -- valid
+  toss111 : Site∅
+  toss111 = ⊢ cycle (1 ∷ 1 ∷ 1 ∷ [])
 
-toss153 : Site∅
-toss153 = ⊢ cycle (1 ∷ 5 ∷ 3 ∷ [])
+  toss20 : Site∅
+  toss20 = ⊢ cycle (2 ∷ 0 ∷ [])
+  
+  toss153 : Site∅
+  toss153 = ⊢ cycle (1 ∷ 5 ∷ 3 ∷ [])
 
-toss2019 : Site∅
-toss2019 = ⊢ cycle (2 ∷ 0 ∷ 1 ∷ 9 ∷ [])
+  toss2019 : Site∅
+  toss2019 = ⊢ cycle (2 ∷ 0 ∷ 1 ∷ 9 ∷ [])
 
-toss441 : Site∅
-toss441 = ⊢ cycle (4 ∷ 4 ∷ 1 ∷ [])
+  toss441 : Site∅
+  toss441 = ⊢ cycle (4 ∷ 4 ∷ 1 ∷ [])
+  
+  -- invalid
+  toss121 : Site∅
+  toss121 = ⊢ cycle (1 ∷ 2 ∷ 1 ∷ [])
 
--- invalid
-toss121 : Site∅
-toss121 = ⊢ cycle (1 ∷ 2 ∷ 1 ∷ [])
+  toss30 : Site∅
+  toss30 = ⊢ cycle (3 ∷ 0 ∷ [])
 
-toss30 : Site∅
-toss30 = ⊢ cycle (3 ∷ 0 ∷ [])
+  toss135 : Site∅
+  toss135 = ⊢ cycle (1 ∷ 3 ∷ 5 ∷ [])
 
-toss135 : Site∅
-toss135 = ⊢ cycle (1 ∷ 3 ∷ 5 ∷ [])
-
-toss2018 : Site∅
-toss2018 = ⊢ cycle (2 ∷ 0 ∷ 1 ∷ 8 ∷ [])
+  toss2018 : Site∅
+  toss2018 = ⊢ cycle (2 ∷ 0 ∷ 1 ∷ 8 ∷ [])

@@ -1,11 +1,34 @@
 module e43 where
 
-open import Data.List hiding (head; tail)
-open import Data.List.NonEmpty hiding (head; tail)
-open import Data.Nat
-open import Size
-open import Codata.Stream
-open import Relation.Binary.PropositionalEquality
+open import Data.Bool using (Bool; true; false)
+open import Data.List using (List; []; _∷_)
+open import Data.List.NonEmpty using (List⁺; _∷_; length)
+open import Data.Nat using (ℕ; zero; suc; z≤n; s≤s; _<_)
+open import Data.Nat.Properties using (_≤?_)
+open import Data.Product using (_×_)
+open import Data.Unit using (tt)
+open import Size using (∞)
+open import Codata.Stream using (Stream; _∷_; head; tail; cycle)
+open import Relation.Binary.PropositionalEquality using (_≡_; _≢_)
+open import Relation.Nullary using (yes; no)
+open import Relation.Nullary.Decidable using (True; False)
+
+infix 3 _⇔_
+_⇔_ : ∀ P Q → Set
+p ⇔ q = (p → q) × (q → p)
+
+1+m≤?1+n⇒m≤?n : (m n : ℕ) → True (m ≤? n) → True (suc m ≤? suc n)
+1+m≤?1+n⇒m≤?n m n p with m ≤? n | suc m ≤? suc n
+1+m≤?1+n⇒m≤?n m n tt | yes m≤n | yes 1+m≤1+n = tt
+1+m≤?1+n⇒m≤?n m n tt | yes m≤n | no  1+m≰1+n = 1+m≰1+n (s≤s m≤n)
+
+_!_ : {A : Set} → Stream A ∞ → ℕ → A
+s ! zero = head s
+s ! suc i = tail s ! i
+
+indexAt : {A : Set} (xs : List⁺ A) → (i : ℕ) → (i<len : i < length xs) → A
+indexAt (x ∷ xs) zero i<len = x
+indexAt (_ ∷ x ∷ xs) (suc i) (s≤s i<len) = indexAt (x ∷ xs) i i<len
 
 record Site∅ : Set where
   coinductive
@@ -41,9 +64,8 @@ Tossable : (ns : Site) → (ms : Site) → air ns ≢ air ms → Site
 air (Tossable ns ms n≢m) = suc (air ns)
 seq (Tossable ns ms n≢m) = suc (air ms) ∷ record { force = seq ns }
 
-_!_ : {A : Set} → Stream A ∞ → ℕ → A
-s ! zero = head s
-s ! suc i = tail s ! i
+isValid : List⁺ ℕ → Bool
+isValid xs = {!!}
 
 -- valid
 toss111 : Site∅

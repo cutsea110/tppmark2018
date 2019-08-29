@@ -6,7 +6,7 @@ open import Data.Fin hiding (_+_; _≟_; _≤?_; _≤_)
 open import Data.Empty
 open import Data.Nat
 open import Data.Nat.DivMod
-open import Data.Nat.Properties
+open import Data.Nat.Properties using (_≤?_)
 open import Data.Product using (_×_; _,_)
 open import Data.Vec
 open import Data.Vec.Properties

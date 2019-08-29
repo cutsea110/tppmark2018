@@ -1,21 +1,21 @@
 module e43 where
 
-open import Agda.Builtin.Nat using (_==_)
-open import Data.Bool using (Bool; true; false; _∧_; _∨_; not)
-open import Data.Fin using (toℕ)
+open import Agda.Builtin.Nat using (_==_; mod-helper)
+open import Data.Bool using (Bool; true; false; _∧_; _∨_; not; T)
+open import Data.Fin using (toℕ; #_)
 open import Data.List using (List; []; _∷_)
 open import Data.List.NonEmpty using (List⁺; _∷_; length; fromVec; toList; zipWith)
 open import Data.Nat using (ℕ; zero; suc; z≤n; s≤s; _<_; _+_)
-open import Data.Nat.DivMod using (_%_)
+open import Data.Nat.DivMod using (_%_; m%n<n)
 open import Data.Nat.Properties using (_≤?_)
 open import Data.Product using (_×_)
 open import Data.Unit using (tt)
-open import Data.Vec using (Vec; tabulate)
+open import Data.Vec using (Vec; tabulate; fromList; lookup)
 open import Size using (∞)
 open import Codata.Stream using (Stream; _∷_; head; tail; cycle)
 open import Relation.Binary.PropositionalEquality using (_≡_; _≢_)
 open import Relation.Nullary using (yes; no)
-open import Relation.Nullary.Decidable using (True; False)
+open import Relation.Nullary.Decidable using (True; False; ⌊_⌋)
 
 infix 3 _⇔_
 _⇔_ : ∀ P Q → Set
@@ -64,12 +64,20 @@ Tossable : (ns : Site) → (ms : Site) → air ns ≢ air ms → Site
 air (Tossable ns ms n≢m) = suc (air ns)
 seq (Tossable ns ms n≢m) = suc (air ms) ∷ record { force = seq ns }
 
-indexAt : {A : Set} (xs : List⁺ A) → (i : ℕ) → (i<len : i < length xs) → A
-indexAt (x ∷ xs) zero i<len = x
-indexAt (_ ∷ x ∷ xs) (suc i) (s≤s i<len) = indexAt (x ∷ xs) i i<len
+indexAt : {A : Set}{k : ℕ} → Vec A (suc k) → (n : ℕ) → A
+indexAt {k = k} xs n = lookup xs (#_ (n % suc k) {n = suc k} {m<n = 1+m≤?1+n⇒m≤?n (n % suc k) k (help n k)})
+  where
+    help : ∀ m k → T ⌊ mod-helper 0 k m k ≤? k ⌋
+    help m k with (m%n<n m k)
+    help m k | s≤s p with mod-helper 0 k m k ≤? k
+    help m k | s≤s p | yes q = tt
+    help m k | s≤s p | no ¬q = ¬q p
 
-phi : (xs : List⁺ ℕ) → (n : ℕ) → (n<len : n < length xs) → ℕ
-phi xs n n<len = n + indexAt xs n n<len
+elementAt : {A : Set} (xs : List⁺ A) → (n : ℕ) → A
+elementAt xs n = indexAt (fromList (toList xs)) n
+
+phi : (xs : List⁺ ℕ) → (i : ℕ) → ℕ
+phi xs i = i + elementAt xs i
 
 injective : (f : ℕ → ℕ) → Set
 injective f = (m n : ℕ) → f m ≡ f n → m ≡ n
@@ -95,6 +103,9 @@ unique⁺ xs = unique (toList xs)
 isValid : List⁺ ℕ → Bool
 isValid xs = unique⁺ (zipWith (λ a i →  (a + i) % sz) xs (iota sz (s≤s z≤n)))
   where sz = length xs
+
+data Valid : List⁺ ℕ → Set where
+  valid : (xs : List⁺ ℕ) → injective (phi xs) → Valid xs
 
 -- sample
 module _  where

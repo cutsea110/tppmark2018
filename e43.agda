@@ -8,7 +8,7 @@ open import Data.List.NonEmpty using (List⁺; _∷_; length; fromVec; toList; z
 open import Data.Nat using (ℕ; zero; suc; z≤n; s≤s; _<_; _+_)
 open import Data.Nat.DivMod using (_%_; m%n<n)
 open import Data.Nat.Properties using (_≤?_)
-open import Data.Product using (_×_)
+open import Data.Product using (_×_; _,_)
 open import Data.Unit using (tt)
 open import Data.Vec using (Vec; tabulate; fromList; lookup)
 open import Size using (∞)
@@ -106,6 +106,15 @@ isValid xs = unique⁺ (zipWith (λ a i →  (a + i) % sz) xs (iota sz (s≤s z�
 
 data Valid : List⁺ ℕ → Set where
   valid : (xs : List⁺ ℕ) → injective (phi xs) → Valid xs
+
+isValid⇒Valid : (xs : List⁺ ℕ) → isValid xs  ≡ true → Valid xs
+isValid⇒Valid xs prf = {!!}
+
+Valid⇒isValid : (xs : List⁺ ℕ) → Valid xs → isValid xs  ≡ true
+Valid⇒isValid xs prf = {!!}
+
+problem1 : (xs : List⁺ ℕ) → isValid xs ≡ true ⇔ Valid xs
+problem1 xs = isValid⇒Valid xs , Valid⇒isValid xs
 
 -- sample
 module _  where

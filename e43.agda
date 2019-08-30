@@ -1,11 +1,11 @@
 module e43 where
 
-open import Agda.Builtin.Nat using (_==_; mod-helper)
+open import Agda.Builtin.Nat using (mod-helper)
 open import Data.Bool using (Bool; true; false; _∧_; _∨_; not; T)
 open import Data.Fin using (toℕ; #_)
 open import Data.List using (List; []; _∷_)
 open import Data.List.NonEmpty using (List⁺; _∷_; length; fromVec; toList; zipWith)
-open import Data.Nat using (ℕ; zero; suc; z≤n; s≤s; _<_; _+_)
+open import Data.Nat using (ℕ; zero; suc; z≤n; s≤s; _<_; _+_; _≡ᵇ_)
 open import Data.Nat.DivMod using (_%_; m%n<n)
 open import Data.Nat.Properties using (_≤?_)
 open import Data.Product using (_×_; _,_)
@@ -87,7 +87,7 @@ iota (suc n) (s≤s 0<n) = fromVec {n = n} (tabulate toℕ)
 
 _elem_ : ℕ → List ℕ → Bool
 _ elem [] = false
-z elem (x ∷ xs) = (z == x) ∨ (z elem xs)
+z elem (x ∷ xs) = (z ≡ᵇ x) ∨ (z elem xs)
 
 _elem⁺_ : ℕ → List⁺ ℕ → Bool
 x elem⁺ xs = x elem (toList xs)

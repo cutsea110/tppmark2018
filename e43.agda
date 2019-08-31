@@ -2,7 +2,7 @@ module e43 where
 
 open import Agda.Builtin.Nat using (mod-helper)
 open import Data.Bool using (Bool; true; false; _∧_; _∨_; not; T)
-open import Data.Fin using (toℕ; #_)
+open import Data.Fin using (toℕ; fromℕ≤; #_)
 open import Data.List using (List; []; _∷_)
 open import Data.List.NonEmpty using (List⁺; _∷_; length; fromVec; toList; zipWith)
 open import Data.Nat using (ℕ; zero; suc; z≤n; s≤s; _<_; _+_; _≡ᵇ_)
@@ -10,10 +10,11 @@ open import Data.Nat.DivMod using (_%_; m%n<n)
 open import Data.Nat.Properties using (_≤?_)
 open import Data.Product using (_×_; _,_)
 open import Data.Unit using (tt)
-open import Data.Vec using (Vec; tabulate; fromList; lookup)
+open import Data.Vec using (Vec; tabulate; fromList; lookup) renaming ([] to ⟨⟩; _∷_ to _∷̌_; [_] to ⟨_⟩)
 open import Size using (∞)
 open import Codata.Stream using (Stream; _∷_; head; tail; cycle)
-open import Relation.Binary.PropositionalEquality using (_≡_; _≢_)
+open import Relation.Binary.PropositionalEquality using (_≡_; _≢_; cong; sym)
+open _≡_
 open import Relation.Nullary using (yes; no)
 open import Relation.Nullary.Decidable using (True; False; ⌊_⌋)
 
@@ -108,10 +109,11 @@ data Valid : List⁺ ℕ → Set where
   valid : (xs : List⁺ ℕ) → injective (phi xs) → Valid xs
 
 isValid⇒Valid : (xs : List⁺ ℕ) → isValid xs  ≡ true → Valid xs
-isValid⇒Valid xs prf = {!!}
+isValid⇒Valid (x ∷ []) refl = valid (x ∷ []) {!!}
+isValid⇒Valid (z ∷ x ∷ xs) prf = {!!}
 
 Valid⇒isValid : (xs : List⁺ ℕ) → Valid xs → isValid xs  ≡ true
-Valid⇒isValid xs prf = {!!}
+Valid⇒isValid xs (valid .xs x) = {!!}
 
 problem1 : (xs : List⁺ ℕ) → isValid xs ≡ true ⇔ Valid xs
 problem1 xs = isValid⇒Valid xs , Valid⇒isValid xs

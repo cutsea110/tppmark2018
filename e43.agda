@@ -113,7 +113,7 @@ isValid⇒Valid (x ∷ []) refl = valid (x ∷ []) {!!}
 isValid⇒Valid (z ∷ x ∷ xs) prf = {!!}
 
 Valid⇒isValid : (xs : List⁺ ℕ) → Valid xs → isValid xs  ≡ true
-Valid⇒isValid xs (valid .xs x) = {!!}
+Valid⇒isValid (x ∷ xs) (valid .(x ∷ xs) prf) = {!!}
 
 problem1 : (xs : List⁺ ℕ) → isValid xs ≡ true ⇔ Valid xs
 problem1 xs = isValid⇒Valid xs , Valid⇒isValid xs

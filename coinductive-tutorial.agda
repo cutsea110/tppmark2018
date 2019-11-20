@@ -13,7 +13,7 @@ record _≈_ {A : Set} (xs : Stream A) (ys : Stream A) : Set where
   coinductive
   field
     hd-≈ : hd xs ≡ hd ys
-    tl-≈ : tl xs ≈ tl xs
+    tl-≈ : tl xs ≈ tl ys
 
 even : ∀ {A} → Stream A → Stream A
 hd (even x) = hd x
@@ -35,4 +35,4 @@ open _≈_
 
 merge-split-id : ∀ {A} (xs : Stream A) → merge (split xs) ≈ xs
 hd-≈ (merge-split-id _ ) = refl
-tl-≈ (merge-split-id xs) = {!!}
+tl-≈ (merge-split-id xs) = merge-split-id (tl xs)

@@ -28,8 +28,11 @@ split : ∀ {A} → Stream A → Stream A × Stream A
 split xs =  even xs , odd xs
 
 merge : ∀ {A} → Stream A × Stream A → Stream A
-hd (merge (fst , snd)) = {!!}
-tl (merge (fst , snd)) = {!!}
+hd (merge (fst , snd)) = hd fst
+tl (merge (fst , snd)) = merge (snd , tl fst)
+
+open _≈_
 
 merge-split-id : ∀ {A} (xs : Stream A) → merge (split xs) ≈ xs
-merge-split-id = {!!}
+hd-≈ (merge-split-id _ ) = refl
+tl-≈ (merge-split-id xs) = {!!}

@@ -1,3 +1,4 @@
+{-# OPTIONS --guardedness #-}
 module coinductive-tutorial where
 
 record Stream (A : Set) : Set where
@@ -41,8 +42,9 @@ uncons : ∀ {A} → Stream A → A × Stream A
 uncons xs = hd xs , tl xs
 
 cons : ∀ {A} → A × Stream A → Stream A
-hd (cons (h , _)) = h
-tl (cons (_ , t)) = t
+hd (cons (fst , snd)) = fst
+tl (cons (fst , snd)) = snd
 
-cons-uncons-id : ∀ {A} {xs : Stream A} → cons (uncons xs) ≈ xs
-cons-uncons-id = {!!}
+cons-uncons-id : ∀ {A} (xs : Stream A) → cons (uncons xs) ≈ xs
+hd-≈ (cons-uncons-id _ ) = refl
+tl-≈ (cons-uncons-id xs) = {!!}

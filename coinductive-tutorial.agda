@@ -38,10 +38,11 @@ hd-≈ (merge-split-id _ ) = refl
 tl-≈ (merge-split-id xs) = merge-split-id (tl xs)
 
 uncons : ∀ {A} → Stream A → A × Stream A
-uncons xs = {!!}
+uncons xs = hd xs , tl xs
 
 cons : ∀ {A} → A × Stream A → Stream A
-cons (x , xs) = {!!}
+hd (cons (h , _)) = h
+tl (cons (_ , t)) = t
 
 cons-uncons-id : ∀ {A} {xs : Stream A} → cons (uncons xs) ≈ xs
 cons-uncons-id = {!!}

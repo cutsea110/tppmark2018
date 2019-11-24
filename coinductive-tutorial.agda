@@ -36,3 +36,12 @@ open _≈_
 merge-split-id : ∀ {A} (xs : Stream A) → merge (split xs) ≈ xs
 hd-≈ (merge-split-id _ ) = refl
 tl-≈ (merge-split-id xs) = merge-split-id (tl xs)
+
+uncons : ∀ {A} → Stream A → A × Stream A
+uncons xs = {!!}
+
+cons : ∀ {A} → A × Stream A → Stream A
+cons (x , xs) = {!!}
+
+cons-uncons-id : ∀ {A} {xs : Stream A} → cons (uncons xs) ≈ xs
+cons-uncons-id = {!!}

@@ -45,6 +45,11 @@ cons : ∀ {A} → A × Stream A → Stream A
 hd (cons (fst , snd)) = fst
 tl (cons (fst , snd)) = snd
 
+-- | ref.) https://stackoverflow.com/questions/59022907/how-can-i-prove-that-cons-after-uncons-over-coinductive-lista-k-a-stream-are-i
+refl-≈ : ∀ {A} {xs : Stream A} → xs ≈ xs
+hd-≈ refl-≈ = refl
+tl-≈ refl-≈ = refl-≈
+
 cons-uncons-id : ∀ {A} (xs : Stream A) → cons (uncons xs) ≈ xs
 hd-≈ (cons-uncons-id _ ) = refl
-tl-≈ (cons-uncons-id xs) = {!!}
+tl-≈ (cons-uncons-id xs) = refl-≈

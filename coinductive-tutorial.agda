@@ -36,7 +36,7 @@ open _≈_
 
 merge-split-id : ∀ {A} (xs : Stream A) → merge (split xs) ≈ xs
 hd-≈ (merge-split-id _ ) = refl
-tl-≈ (merge-split-id xs) = {!!} --  merge-split-id (tl xs)
+tl-≈ (merge-split-id xs) = merge-split-id (tl xs)
 
 uncons : ∀ {A} → Stream A → A × Stream A
 uncons xs = hd xs , tl xs
@@ -52,4 +52,4 @@ tl-≈ refl-≈ = refl-≈
 
 cons-uncons-id : ∀ {A} (xs : Stream A) → cons (uncons xs) ≈ xs
 hd-≈ (cons-uncons-id _ ) = refl
-tl-≈ (cons-uncons-id xs) = {!!} -- refl-≈
+tl-≈ (cons-uncons-id xs) = refl-≈

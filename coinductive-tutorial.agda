@@ -53,3 +53,12 @@ tl-≈ refl-≈ = refl-≈
 cons-uncons-id : ∀ {A} (xs : Stream A) → cons (uncons xs) ≈ xs
 hd-≈ (cons-uncons-id _ ) = refl
 tl-≈ (cons-uncons-id xs) = refl-≈
+
+open import Data.Nat
+
+ones : Stream ℕ
+hd ones = 1
+tl ones = ones
+
+tl-ones-ones-id : tl ones ≈ ones
+tl-ones-ones-id = refl-≈

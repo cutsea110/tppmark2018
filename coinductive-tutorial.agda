@@ -62,3 +62,11 @@ tl ones = ones
 
 tl-ones-ones-id : tl ones ≈ ones
 tl-ones-ones-id = refl-≈
+
+map′ : ∀ {A B} → (A → B) → Stream A → Stream B
+hd (map′ f xs) = f (hd xs)
+tl (map′ f xs) = map′ f (tl xs)
+
+nats : Stream ℕ
+hd nats = 0
+%tl nats = map′ suc nats

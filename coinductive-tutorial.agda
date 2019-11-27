@@ -63,10 +63,16 @@ tl ones = ones
 tl-ones-ones-id : tl ones ≈ ones
 tl-ones-ones-id = refl-≈
 
+-- ref.) http://www.cse.chalmers.se/~abela/talkFrankfurt2015.pdf
+unfold : {S A : Set} → ((S → A) × (S → S)) → S → Stream A
+hd (unfold (h , t) s) = h s
+tl (unfold (h , t) s) = unfold (h , t) (t s)
+
+
 map′ : ∀ {A B} → (A → B) → Stream A → Stream B
 hd (map′ f xs) = f (hd xs)
 tl (map′ f xs) = map′ f (tl xs)
 
-nats : Stream ℕ
-hd nats = 0
-%tl nats = map′ suc nats
+-- nats : Stream ℕ
+-- hd nats = 0
+-- tl nats = map′ suc nats

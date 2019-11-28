@@ -73,6 +73,6 @@ map′ : ∀ {A B} → (A → B) → Stream A → Stream B
 hd (map′ f xs) = f (hd xs)
 tl (map′ f xs) = map′ f (tl xs)
 
--- nats : Stream ℕ
--- hd nats = 0
--- tl nats = map′ suc nats
+nats : Stream ℕ
+hd nats = 0
+tl nats = map′ suc nats

@@ -3,6 +3,7 @@ module coinductive-tutorial where
 
 record Stream (A : Set) : Set where
   coinductive
+  constructor _∷_
   field
     hd : A
     tl : Stream A
@@ -73,6 +74,9 @@ open import Function using (_∘_)
 map′ : ∀ {A B} → (A → B) → Stream A → Stream B
 map′ f xs = unfold (f ∘ hd , tl) xs
 
+from : ℕ → Stream ℕ
+hd (from n) = n
+tl (from n) = from (suc n)
+
 nats : Stream ℕ
-hd nats = 0
-tl nats = map′ suc nats
+nats = from 0

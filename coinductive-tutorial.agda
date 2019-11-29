@@ -68,10 +68,10 @@ unfold : {S A : Set} → ((S → A) × (S → S)) → S → Stream A
 hd (unfold (h , t) s) = h s
 tl (unfold (h , t) s) = unfold (h , t) (t s)
 
+open import Function using (_∘_)
 
 map′ : ∀ {A B} → (A → B) → Stream A → Stream B
-hd (map′ f xs) = f (hd xs)
-tl (map′ f xs) = map′ f (tl xs)
+map′ f xs = unfold (f ∘ hd , tl) xs
 
 nats : Stream ℕ
 hd nats = 0

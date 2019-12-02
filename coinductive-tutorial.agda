@@ -1,4 +1,4 @@
-{-# OPTIONS --guardedness #-}
+{-# OPTIONS --safe --guardedness #-}
 module coinductive-tutorial where
 
 record Stream (A : Set) : Set where
@@ -80,3 +80,10 @@ tl (from n) = from (suc n)
 
 nats : Stream ℕ
 nats = from 0
+
+zipWith : ∀ {A B C} → (A → B → C) → Stream A → Stream B → Stream C
+hd (zipWith f xs ys) = f (hd xs) (hd ys)
+tl (zipWith f xs ys) = zipWith f (tl xs) (tl ys)
+
+fib : Stream ℕ
+fib = {!!}
